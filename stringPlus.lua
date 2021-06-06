@@ -1,18 +1,19 @@
 local module = {}
 
-function Contains(chaine, sousChaine)
+function contient(chaine, sousChaine)
  local estPresent = false
  if string.match(chaine, sousChaine) ~= nil then 
   estPresent = true
  end
  return estPresent
 end
-module["Contains"] = Contains
+module["contient"] = contient
+
 
 return module
 
 --[[
---Iterate trough string
+--Itérer à travers un string
 for i = 1, #s do
     local c = s.sub(i,i)
     --stuff
