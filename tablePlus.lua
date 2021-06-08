@@ -27,6 +27,7 @@ end
 module["indice"] = indice
 
 
+--{ Copie une table
 function copier(tab, prof)
     prof = prof or false
     local copie = {}
