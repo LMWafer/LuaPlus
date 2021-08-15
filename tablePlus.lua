@@ -31,7 +31,7 @@ module["indice"] = indice
 module["index"] = indice
 
 
---{ Copie une table
+--{ Copie une table en profondeur ou non
 function copier(tab, prof)
     prof = prof or false
     local copie = {}
@@ -66,6 +66,8 @@ module["copy"] = copier
 
 --{ Donne la longeur d'une table, remplace #<table> lorsque les clés ne sont pas des entiers
 function longeur(tab)
+    if type(tab) ~= "table" then error("table attendue, type fournit : " .. type(tab), 2) end
+
     local longeur = 0
     for _ in pairs(tab) do longeur = longeur + 1 end
     return longeur
