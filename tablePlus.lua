@@ -69,7 +69,7 @@ function longeur(tab)
     for _ in pairs(tab) do longeur = longeur + 1 end
     return longeur
 end
-module = ["longeur"] = longeur
-module = ["length"] = longeur
+module["longeur"] = longeur
+module["length"] = longeur
 
 return module
