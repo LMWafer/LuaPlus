@@ -1,30 +1,31 @@
 local module = {}
 
---{ Retourne true + index de la première occurence d'object si tab contient object
-function contient(tab, objet)
+--{ Retourne true + clé de la première occurence d'object si tab contient object en tant que clé ou valeur (à indiquer en paramètre)
+function contient(tab, objet, cle_)
+    cle_ = cle_ or false
     if type(tab) ~= "table" then error("table attendue, type fournit : " .. type(tab), 2) end
- 
-    for index, value in pairs(tab) do
-        if value == objet then
-            return true, index
-        end
+    
+    local retour = false, nil
+    for cle, val in pairs(tab) do
+        if (cle_ and cle == objet) or (not cle_ and val == objet) then retour = true, cle
     end
-    return false, -1
+    return retour
 end
 module["contient"] = contient
-module["countain"] = contient
+module["contain"] = contient
 
 
 --{ Retourne l'index de la première occurence d'objet si tab contient object
 function indice(tab, objet)
     if type(tab) ~= "table" then error("table expected, type fournit : " .. type(tab), 2) end
 
-    for index, value in pairs(tab) do
-        if value == objet then
-            return index
+    retour = nil
+    for cle, val in pairs(tab) do
+        if val == objet then
+            retour = cle
         end
     end
-    return -1
+    return retour
 end
 module["indice"] = indice
 module["index"] = indice
