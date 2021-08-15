@@ -30,6 +30,7 @@ module["indice"] = indice
 module["index"] = indice
 
 
+--{ Copie une table
 function copier(tab, prof)
     prof = prof or false
     local copie = {}

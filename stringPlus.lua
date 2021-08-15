@@ -1,5 +1,6 @@
 local module = {}
 
+--{ Vérifie si le string contient un sous-string
 function contient(chaine, sousChaine)
  local estPresent = false
  if string.match(chaine, sousChaine) ~= nil then 

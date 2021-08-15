@@ -1,5 +1,6 @@
 local module = {}
 
+--{ Copie une variable avec une option de descente en profondeur
 function copier(obj, prof)
     prof = prof or false
     local typ = type(obj)
