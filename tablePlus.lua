@@ -12,6 +12,8 @@ function contient(tab, objet)
     return false, -1
 end
 module["contient"] = contient
+module["countain"] = contient
+
 
 --{ Retourne l'index de la première occurence d'objet si tab contient object
 function indice(tab, objet)
@@ -25,6 +27,7 @@ function indice(tab, objet)
     return -1
 end
 module["indice"] = indice
+module["index"] = indice
 
 
 function copier(tab, prof)
@@ -56,5 +59,16 @@ function copier(tab, prof)
     return copie
 end
 module["copier"] = copier
+module["copy"] = copier
+
+
+--{ Donne la longeur d'une table, remplace #<table> lorsque les clés ne sont pas des entiers
+function longeur(tab)
+    local longeur = 0
+    for _ in pairs(tab) do longeur = longeur + 1 end
+    return longeur
+end
+module = ["longeur"] = longeur
+module = ["length"] = longeur
 
 return module
