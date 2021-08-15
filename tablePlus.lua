@@ -1,21 +1,24 @@
 local module = {}
 
---{ Retourne true + clé de la première occurence d'object si tab contient object en tant que clé ou valeur (à indiquer en paramètre)
+--{ Retourne true + clé de la première occurence d'<object> si <tab> contient object en tant que clé ou valeur (à indiquer en paramètre)
+--! PROCHAINE VERSION : RETOURNE LA CLE DE TOUTES LES OCCURENCES
 function contient(tab, objet, cle_)
     cle_ = cle_ or false
     if type(tab) ~= "table" then error("table attendue, type fournit : " .. type(tab), 2) end
     
     local retour = false, nil
     for cle, val in pairs(tab) do
-        if (cle_ and cle == objet) or (not cle_ and val == objet) then retour = true, cle
+        if (cle_ and cle == objet) or (not cle_ and val == objet) then retour = true, cle end
     end
     return retour
 end
 module["contient"] = contient
 module["contain"] = contient
+module["has"] = contient
 
 
 --{ Retourne l'index de la première occurence d'objet si tab contient object
+--! PROCHAINE VERSION : RETOURNE LA CLE DE TOUTES LA PREMIERE OCCURENCE
 function indice(tab, objet)
     if type(tab) ~= "table" then error("table expected, type fournit : " .. type(tab), 2) end
 
@@ -29,9 +32,10 @@ function indice(tab, objet)
 end
 module["indice"] = indice
 module["index"] = indice
+module["ix"] = indice
 
 
---{ Copie une table en profondeur ou non
+--{ Copie une table
 function copier(tab, prof)
     prof = prof or false
     local copie = {}
@@ -62,6 +66,7 @@ function copier(tab, prof)
 end
 module["copier"] = copier
 module["copy"] = copier
+module["cp"] = copier
 
 
 --{ Donne la longeur d'une table, remplace #<table> lorsque les clés ne sont pas des entiers
@@ -74,5 +79,6 @@ function longeur(tab)
 end
 module["longeur"] = longeur
 module["length"] = longeur
+module["len"] = longeur
 
 return module
