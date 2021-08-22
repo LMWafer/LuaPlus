@@ -11,6 +11,11 @@ end
 module["contient"] = contient
 
 
+--{ Retourne un pourcentage du string
+function pourcentage()
+end
+
+
 return module
 
 --[[
