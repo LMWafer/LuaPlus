@@ -1,42 +1,102 @@
 local module = {}
 
---{ Retourne true + clé de la première occurence d'<object> si <tab> contient object en tant que clé ou valeur (à indiquer en paramètre)
---! PROCHAINE VERSION : RETOURNE LA CLE DE TOUTES LES OCCURENCES
-function contient(tab, objet, cle_)
-    cle_ = cle_ or false
-    if type(tab) ~= "table" then error("table attendue, type fournit : " .. type(tab), 2) end
-    
-    local retour = false, nil
+
+function indexCle(tab, objet, mult)
+    if mult == nil then mult = true end
+    if type(tab) ~= "table" then error("argument #1 table attendue, " .. type(tab) .. " fournit ", 2) end
+    if objet == nil then error("argument #2 variable attendue, nil fournit", 2) end
+    if type(mult) ~= "boolean" then error("argument #3 boolean attendue, " .. type(mult) .. " fournit ", 2) end
+
+    --> Variable de boucle : la liste des valeurs
+    local valeurs = {}
+    --> Pour chaque clé et valeur dans <tab> ..
     for cle, val in pairs(tab) do
-        if (cle_ and cle == objet) or (not cle_ and val == objet) then retour = true, cle end
-    end
-    return retour
-end
-module["contient"] = contient
-module["contain"] = contient
-module["has"] = contient
-
-
---{ Retourne l'index de la première occurence d'objet si tab contient object
---! PROCHAINE VERSION : RETOURNE LA CLE DE TOUTES LA PREMIERE OCCURENCE
-function indice(tab, objet)
-    if type(tab) ~= "table" then error("table expected, type fournit : " .. type(tab), 2) end
-
-    retour = nil
-    for cle, val in pairs(tab) do
-        if val == objet then
-            retour = cle
+        --> .. si la clé coïncide avec <objet> .. ..
+        if cle == objet then
+            --> .. .. ajouer la valeur à la liste .. ..
+            table.insert(valeurs, val)
+            --> .. .. et casser la boucle si on ne veut que la première occurence
+            if not mult then break end
         end
     end
+
+    --> Retour
+    return valeurs
+end
+module["xk"] = indexCle
+module["indexCle"] = indexCle
+module["indexKey"] = indexCle
+
+
+function indexVal(tab, objet, mult)
+    if mult == nil then mult = true end
+    if type(tab) ~= "table" then error("argument #1 table attendue, " .. type(tab) .. " fournit ", 2) end
+    if objet == nil then error("argument #2 variable attendue, nil fournit", 2) end
+    if type(mult) ~= "boolean" then error("argument #3 boolean attendue, " .. type(mult) .. " fournit ", 2) end
+
+    --> Variable de boucle : la liste des clés
+    local cles = {}
+    --> Pour chaque clé et valeur dans <tab> ..
+    for cle, val in pairs(tab) do
+        --> .. si la valeur coïncide avec <objet> .. ..
+        if val == objet then
+            --> .. .. ajouer la cle à la liste .. ..
+            table.insert(cles, cle)
+            --> .. .. et casser la boucle si on ne veut que la première occurence
+            if not mult then break end
+        end
+    end
+
+    --> Retour
+    return cles
+end
+module["xv"] = indexVal
+module["indexVal"] = indexVal
+
+
+--{ Indique si <tab> contient <objet> en tant que clé
+function contientCle(tab, objet)
+    if type(tab) ~= "table" then error("argument #1 table attendue, " .. type(tab) .. " fournit ", 2) end
+    if objet == nil then error("argument #2 variable attendue, nil fournit", 2) end
+    
+    local retour = false
+    for cle, val in pairs(tab) do
+        if cle == objet then retour = true; break end
+    end
+
+    --> Retour
     return retour
 end
-module["indice"] = indice
-module["index"] = indice
-module["ix"] = indice
+module["hk"] = contient
+module["contientCle"] = contient
+module["containKey"] = contient
+module["hasKey"] = contient
+
+
+--{ Indique si <tab> contient <objet> en tant que valeur
+function contientVal(tab, objet)
+    if type(tab) ~= "table" then error("argument #1 table attendue, " .. type(tab) .. " fournit ", 2) end
+    if objet == nil then error("argument #2 variable attendue, nil fournit", 2) end
+    
+    local retour = false
+    for cle, val in pairs(tab) do
+        if val == objet then retour = true; break end
+    end
+
+    --> Retour
+    return retour
+end
+module["hv"] = contient
+module["contientVal"] = contient
+module["containVal"] = contient
+module["hasVal"] = contient
 
 
 --{ Copie une table
 function copier(tab, prof)
+    if type(tab) ~= "table" then error("argument #1 table attendue, " .. type(tab) .. " fournit ", 2) end
+    if type(prof) ~= "boolean" then error("argument #2 boolean attendu, " .. type(prof) .. " fournit ", 2) end
+
     prof = prof or false
     local copie = {}
     
@@ -75,10 +135,68 @@ function longeur(tab)
 
     local longeur = 0
     for _ in pairs(tab) do longeur = longeur + 1 end
+    
+    --> Retour
     return longeur
 end
 module["longeur"] = longeur
 module["length"] = longeur
 module["len"] = longeur
+
+
+--{ Affiche le contenu de <tab>
+function afficher(tab, read)
+    if read == nil then read = false end
+    if type(tab) ~= "table" then error("argument #1 table attendue, " .. type(tab) .. " fournit ", 2) end
+    if type(read) ~= "boolean" then error("argument #2 boolean attendu, " .. type(read) .. " fournit ", 2) end
+
+    if read then term = require("term") end
+    for k, v in pairs(tab) do 
+        print(k, v, "\n")
+        if read then term.read() end
+    end
+end
+module["ls"] = afficher
+module["aff"] = afficher
+module["afficher"] = afficher
+module["print"] = afficher
+
+
+--{ Affiche les clés de <tab>
+function afficherCles(tab, read)
+    if read == nil then read = false end
+    if type(tab) ~= "table" then error("argument #1 table attendue, " .. type(tab) .. " fournit ", 2) end
+    if type(read) ~= "boolean" then error("argument #2 boolean attendu, " .. type(read) .. " fournit ", 2) end
+
+    if read then term = require("term") end
+    for cle, val in pairs(tab) do 
+        print(cle, "\n")
+        if read then term.read() end
+    end
+end
+module["keys"] = afficherCles
+module["cles"] = afficherCles
+
+
+--{ Affiche les valeurs de <tab>
+function afficherVal(tab, read)
+    if read == nil then read = false end
+    if type(tab) ~= "table" then error("argument #1 table attendue, " .. type(tab) .. " fournit ", 2) end
+    if type(read) ~= "boolean" then error("argument #2 boolean attendu, " .. type(read) .. " fournit ", 2) end
+
+    if read then term = require("term") end
+    for cle, val in pairs(tab) do 
+        print(val, "\n")
+        if read then term.read() end
+    end
+end
+module["vals"] = afficherVal
+module["valeurs"] = afficherVal
+module["values"] = afficherVal
+
+
+function estEgale(tab, prof)
+end
+
 
 return module
