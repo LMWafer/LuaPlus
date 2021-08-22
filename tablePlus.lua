@@ -1,57 +1,56 @@
 local module = {}
 
 
-function indexCle(tab, objet, mult)
+function valeursDeCle(tab, objet, mult)
     if mult == nil then mult = true end
     if type(tab) ~= "table" then error("argument #1 table attendue, " .. type(tab) .. " fournit ", 2) end
     if objet == nil then error("argument #2 variable attendue, nil fournit", 2) end
     if type(mult) ~= "boolean" then error("argument #3 boolean attendue, " .. type(mult) .. " fournit ", 2) end
 
     --> Variable de boucle : la liste des valeurs
-    local valeurs = {}
+    local valeurs = nil
+    if mult then valeurs = {} end
     --> Pour chaque clé et valeur dans <tab> ..
     for cle, val in pairs(tab) do
         --> .. si la clé coïncide avec <objet> .. ..
         if cle == objet then
-            --> .. .. ajouer la valeur à la liste .. ..
-            table.insert(valeurs, val)
-            --> .. .. et casser la boucle si on ne veut que la première occurence
-            if not mult then break end
+            if not mult then valeurs = val; break
+            else table.insert(valeurs, val) end
         end
     end
 
     --> Retour
     return valeurs
 end
-module["xk"] = indexCle
-module["indexCle"] = indexCle
-module["indexKey"] = indexCle
+module["vok"] = valeursDeCle
+module["valeursDeCle"] = valeursDeCle
+module["valuesOfKey"] = valeursDeCle
 
 
-function indexVal(tab, objet, mult)
+function clesDeValeur(tab, objet, mult)
     if mult == nil then mult = true end
     if type(tab) ~= "table" then error("argument #1 table attendue, " .. type(tab) .. " fournit ", 2) end
     if objet == nil then error("argument #2 variable attendue, nil fournit", 2) end
     if type(mult) ~= "boolean" then error("argument #3 boolean attendue, " .. type(mult) .. " fournit ", 2) end
 
     --> Variable de boucle : la liste des clés
-    local cles = {}
+    local cles = nil
+    if mult then cles = {} end
     --> Pour chaque clé et valeur dans <tab> ..
     for cle, val in pairs(tab) do
         --> .. si la valeur coïncide avec <objet> .. ..
         if val == objet then
-            --> .. .. ajouer la cle à la liste .. ..
-            table.insert(cles, cle)
-            --> .. .. et casser la boucle si on ne veut que la première occurence
-            if not mult then break end
+            if not mult then cles = cle; break
+            else table.insert(cles, cle) end
         end
     end
 
     --> Retour
     return cles
 end
-module["xv"] = indexVal
-module["indexVal"] = indexVal
+module["kov"] = clesDeValeur
+module["clesDeValeur"] = clesDeValeur
+module["keysOfValue"] = clesDeValeur
 
 
 --{ Indique si <tab> contient <objet> en tant que clé
